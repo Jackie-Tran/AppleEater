@@ -20,18 +20,20 @@ public class Game extends Canvas implements Runnable{
 	public static final int WIDTH = 400;
 	public static final int HEIGHT = 300;
 	public static final int SCALE = 2;
-	public static final String TITLE = "Apple Eater";
+	public static final String TITLE = "Apple Eater - Better Graphics";
 	
 	public static int FPS;
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        private int pixels[] = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+        private Screen screen;
 	
 	private boolean running = false;
 	private Thread thread;
+        
 	
 	public Game() {
 		new GameWindow(WIDTH, HEIGHT, SCALE, TITLE, this);
-		
 	}
 	
 	public void init() {
@@ -40,6 +42,7 @@ public class Game extends Canvas implements Runnable{
 	public synchronized void start() {
 		if (running)
 			return;
+                screen = new Screen(WIDTH, HEIGHT);
 		thread = new Thread(this);
 		running = true;
 		thread.start();
@@ -101,11 +104,13 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+                screen.render();
+                for (int i = 0; i < screen.pixels.length; i ++) {
+                    pixels[i] = screen.pixels[i];
+                }
 		// ///////////////////////////////
 		// DRAW HERE
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
 		// ///////////////////////////////
 		g.dispose();
 		bs.show();
