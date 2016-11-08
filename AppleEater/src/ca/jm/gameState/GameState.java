@@ -6,6 +6,7 @@
 package ca.jm.gameState;
 
 import ca.jm.main.Game;
+import ca.jm.main.Screen;
 import java.awt.Graphics2D;
 
 /**
@@ -14,20 +15,14 @@ import java.awt.Graphics2D;
  */
 public abstract class GameState {
     
-    protected void init() {
-        
-    }
     
     public GameState(GameStateManager gsm) {
         
     }
     
-    protected void tick() {
-        
-    }
+    protected abstract void init();
+    protected abstract void tick();
     
-    protected void render(Graphics2D g) {
-        
-    }
+    protected abstract void render(Graphics2D g, Screen screen);
     
 }

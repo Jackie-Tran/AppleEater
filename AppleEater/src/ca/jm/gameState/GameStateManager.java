@@ -14,11 +14,11 @@ import java.awt.Graphics2D;
  */
 public class GameStateManager {
 
-    private Game game;
+    public Game game;
     private int currentState;
     private GameState gameStates[];
 
-    private final int NUM_STATES = 1;
+    private final int NUM_STATES = 3;
     //Gamestate ID's
     public final int TEST_STATE = 0;
 
@@ -26,11 +26,12 @@ public class GameStateManager {
         this.game = game;
         gameStates = new GameState[NUM_STATES];
         currentState = TEST_STATE;
+        setState(currentState);
     }
 
     public void loadState(int state) { // Loads the state
         if (state == TEST_STATE) {
-            gameStates[state] = new TestState();
+            gameStates[state] = new TestState(this);
         }
     }
 
@@ -39,10 +40,15 @@ public class GameStateManager {
     }
 
     public void setState(int state) {
-        int previousState = currentState;
-        loadState(state);
+        /*
+         int previousState = currentState;
+         loadState(state);
+         currentState = state;
+         unloadState(previousState);
+         gameStates[currentState].init();*/
+        unloadState(currentState);
         currentState = state;
-        unloadState(previousState);
+        loadState(currentState);
         gameStates[currentState].init();
     }
 
@@ -51,7 +57,7 @@ public class GameStateManager {
     }
 
     public void render(Graphics2D g) {
-        gameStates[currentState].render(g);
+        gameStates[currentState].render(g, game.screen);
     }
 
 }
